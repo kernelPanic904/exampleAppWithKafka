@@ -1,0 +1,46 @@
+services:
+  app:
+    build: .
+    entrypoint: ["uvicorn", "--factory", "src.cli:get_application", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    container_name: app
+    volumes:
+      - .:/project
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db_app
+      - broker
+
+  db_app:
+    image: postgres:latest
+    container_name: db_app
+    hostname: db_app
+    environment:
+      POSTGRES_USER: some_user
+      POSTGRES_PASSWORD: some_password
+      POSTGRES_DB: warehouse_db
+    ports:
+      - "5432:5432"
+    
+  broker:
+    image: apache/kafka:latest
+    container_name: broker
+    hostname: broker
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      ALLOW_PLAINTEXT_LISTENER: yes
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+
+  broker-ui:
+    container_name: broker-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8080:8080"
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'

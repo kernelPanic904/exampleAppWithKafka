@@ -1,0 +1,19 @@
+[project]
+name = "TestAssignmentKafka"
+requires-python = ">= 3.13"
+authors = [
+    {name = "Andrey Hackin", email = "lucifer.2077@gmail.com"},
+]
+license = {file = "LICENSE"}
+version = "0.0.1"
+dependencies = [
+  "fastapi==0.116.1",
+  "faststream[kafka]==0.5.48",
+  "sqlalchemy[asyncio]==2.0.41",
+  "psycopg[binary]==3.2.9",
+  "pytest==8.4.1",
+  "dishka==1.6.0",
+  "uvicorn==0.35.0",
+  "alembic==1.16.4",
+]
+readme = "README.md"

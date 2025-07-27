@@ -1,0 +1,12 @@
+[db]
+username = "example"
+password = "example"
+host = "example"
+name = "example"
+port = 5432
+
+[mq]
+username = "example"
+password = "example"
+host = "example"
+port = 9092
